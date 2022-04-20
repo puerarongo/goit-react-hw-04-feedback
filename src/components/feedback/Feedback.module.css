@@ -1,0 +1,34 @@
+.container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.button {
+    padding: 5px 12px;
+
+    color: rgb(28, 28, 28);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid rgb(191, 191, 191);
+    border-radius: 4px;
+    
+    
+}
+
+.button:not(:last-child) {
+    margin-right: 10px;
+}
+
+.button:nth-child(1) {
+    background-color: rgb(17, 230, 17);
+}
+
+.button:nth-child(2) {
+    background-color: rgb(217, 240, 11);
+}
+
+.button:nth-child(3) {
+    background-color: rgb(200, 12, 12);
+}

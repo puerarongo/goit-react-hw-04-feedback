@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.reviews {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.reviews:not(:last-child) {
+    margin-right: 20px;
+}
