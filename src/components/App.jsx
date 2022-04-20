@@ -1,60 +1,50 @@
-import React, { Component } from "react";
+import React, { useReducer } from "react";
 import Section from "./section/Section";
 import Feedback from "./feedback/Feedback";
 import Statistics from "./statistics/Statistics";
 import Notification from "./notification/Notification";
 
 
-class App extends Component {
-  state = {
-        good: 0,
-        neutral: 0,
-        bad: 0,
-        total: 0,
-        percent: 0
+const options = ["good", "neutral", "bad"];
+
+const feedbackReducer = (state, action) => {
+  const { good, neutral, bad } = state;
+
+  switch (action.type) {
+    case "good":
+      return {...state, good: good + 1}
+    case "neutral":
+      return {...state, neutral: neutral + 1}
+    case "bad":
+      return { ...state, bad: bad + 1 }
+    default:
+      throw new Error();
   }
-  
-    //options = ["good", "neutral", "bad"];
+};
 
-    count = e => {
-      const { name } = e.currentTarget
-      this.setState(prevState => {
-          return {[name]: prevState[name] + 1}
-      })
+const App = () => {
+  const [feedback, dispatch] = useReducer(feedbackReducer, {
+    good: 0,
+    neutral: 0,
+    bad: 0
+  });
 
-      this.countTotalFeedback();
-      this.countPositiveFeedbackPercentage();
-    };
+  const { good, neutral, bad } = feedback;
+  const total = good + bad + neutral;
 
-    countTotalFeedback = () => {
-      this.setState(prevState => {
-          return { total: prevState.good + prevState.neutral + prevState.bad }
-      })
-    };
-
-  countPositiveFeedbackPercentage = () => {
-    this.setState(prevState => {
-      return { percent: Math.round(prevState.good / prevState.total * 100) }
-    })
-  };
-
-  render() {
-    const { good, neutral, bad, total, percent } = this.state;
-
-    return (
-      <div>
-        <Section title={"Please leave feedback"}>
-          <Feedback options={["good", "neutral", "bad"]} onLeaveFeedback={this.count}/>
-        </Section>
-        {total > 0 ? (
-          <Section title={"Statistics"}>
-            <Statistics good={good} neutral={neutral} bad={bad} total={total} positivePercentage={percent}/>
-          </Section>) : (
-            <Notification message={"No feedback given!"}/>
-          )}
-      </div>
-    )
-  }
-}
+  return (
+    <div>
+      <Section title={"Please leave feedback"}>
+        <Feedback options={options} func={dispatch} />
+      </Section>
+      {total > 0 ? (
+        <Section title={"Statistics"}>
+          <Statistics good={good} neutral={neutral} bad={bad} total={total} />
+        </Section>) : (
+        <Notification message={"No feedback given!"} />
+      )}
+    </div>
+  )
+};
 
 export default App;
